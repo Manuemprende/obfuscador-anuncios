@@ -103,7 +103,7 @@ const App = () => {
             </label>
             <input
               type="text"
-              id="wordsInput"
+              id="wordsInput
               value={wordsToObfuscate}
               onChange={(e) => setWordsToObfuscate(e.target.value)}
               placeholder="Ej: dinero, gratis, oferta"
