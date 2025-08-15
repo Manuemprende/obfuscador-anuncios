@@ -1,32 +1,34 @@
 import { useState, useCallback } from 'react';
 
+/* ===== helpers fuera del componente ===== */
+const HOMOGLYPH_MAP = {
+  a: 'а', A: 'А',
+  e: 'е', E: 'Е',
+  o: 'о', O: 'О',
+  c: 'с', C: 'С',
+  p: 'р', P: 'Р',
+  x: 'х', X: 'Х',
+  s: 'ѕ', S: 'Ѕ',
+  l: 'Ӏ',
+};
+
+function applyObfuscationToWord(word) {
+  let result = '';
+  for (const char of word) {
+    const obfuscatedChar = HOMOGLYPH_MAP[char] || char;
+    result += obfuscatedChar;
+    result += '\u200c'; // ancho cero
+  }
+  return result;
+}
+/* ======================================== */
+
 const App = () => {
   const [inputText, setInputText] = useState('');
   const [wordsToObfuscate, setWordsToObfuscate] = useState('');
   const [obfuscatedText, setObfuscatedText] = useState('');
   const [message, setMessage] = useState('');
   const [selectedWord, setSelectedWord] = useState('');
-
-  const homoglyphMap = {
-    'a': 'а', 'A': 'А',
-    'e': 'е', 'E': 'Е',
-    'o': 'о', 'O': 'О',
-    'c': 'с', 'C': 'С',
-    'p': 'р', 'P': 'Р',
-    'x': 'х', 'X': 'Х',
-    's': 'ѕ', 'S': 'Ѕ',
-    'l': 'Ӏ',
-  };
-
-  const applyObfuscationToWord = (word) => {
-    let result = '';
-    for (const char of word) {
-      const obfuscatedChar = homoglyphMap[char] || char;
-      result += obfuscatedChar;
-      result += '\u200c';
-    }
-    return result;
-  };
 
   const obfuscateText = useCallback(() => {
     if (!inputText || !wordsToObfuscate) {
@@ -36,13 +38,26 @@ const App = () => {
       return;
     }
 
-    const wordsList = wordsToObfuscate.split(',').map(w => w.trim()).filter(Boolean);
-    if (wordsList.length === 0) { setObfuscatedText(inputText); return; }
+    const wordsList = wordsToObfuscate
+      .split(',')
+      .map(w => w.trim())
+      .filter(Boolean);
 
-    const pattern = wordsList.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+    if (wordsList.length === 0) {
+      setObfuscatedText(inputText);
+      return;
+    }
+
+    const pattern = wordsList
+      .map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+      .join('|');
+
     const regex = new RegExp(`\\b(${pattern})\\b`, 'gi');
 
-    const result = inputText.replace(regex, (match) => applyObfuscationToWord(match));
+    const result = inputText.replace(regex, match =>
+      applyObfuscationToWord(match)
+    );
+
     setObfuscatedText(result);
   }, [inputText, wordsToObfuscate]);
 
@@ -66,7 +81,7 @@ const App = () => {
     }
   }, [obfuscatedText]);
 
-  const handleTextSelection = (e) => {
+  const handleTextSelection = e => {
     const text = e.target.value;
     const start = e.target.selectionStart;
     const end = e.target.selectionEnd;
@@ -78,9 +93,13 @@ const App = () => {
 
   const addSelectedWord = () => {
     if (selectedWord) {
-      const words = wordsToObfuscate.split(',').map(w => w.trim()).filter(Boolean);
+      const words = wordsToObfuscate
+        .split(',')
+        .map(w => w.trim())
+        .filter(Boolean);
       if (!words.includes(selectedWord)) {
-        const newWords = words.length > 0 ? `${wordsToObfuscate}, ${selectedWord}` : selectedWord;
+        const newWords =
+          words.length > 0 ? `${wordsToObfuscate}, ${selectedWord}` : selectedWord;
         setWordsToObfuscate(newWords);
       }
       setSelectedWord('');
@@ -93,33 +112,36 @@ const App = () => {
         <h1 className="center-title">
           <span className="gradient-text">Ofuscador</span> de Anuncios
         </h1>
+
         <p className="center-subtitle">
-          Transforma tu texto para evitar filtros, seleccionando solo las palabras clave que necesitas ofuscar.
+          Transforma tu texto para evitar filtros, seleccionando solo las palabras
+          clave que necesitas ofuscar.
         </p>
+
         <div className="stack">
           <div className="field">
-            <label htmlFor="wordsInput" className="center-label text-gray-300 font-semibold mb-2">
+            <label htmlFor="wordsInput" className="center-label">
               1. Palabras clave a ofuscar (separadas por comas):
             </label>
             <input
               type="text"
               id="wordsInput"
               value={wordsToObfuscate}
-              onChange={(e) => setWordsToObfuscate(e.target.value)}
+              onChange={e => setWordsToObfuscate(e.target.value)}
               placeholder="Ej: dinero, gratis, oferta"
               className="input"
             />
           </div>
 
           <div className="field">
-            <label htmlFor="textInput" className="center-label text-gray-300 font-semibold mb-2">
+            <label htmlFor="textInput" className="center-label">
               2. Ingresa tu texto de anuncio aquí:
             </label>
             <textarea
               id="textInput"
               rows="8"
               value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
+              onChange={e => setInputText(e.target.value)}
               onSelect={handleTextSelection}
               placeholder="Escribe tu anuncio aquí..."
               className="textarea"
@@ -138,7 +160,7 @@ const App = () => {
           </button>
 
           <div className="field">
-            <label htmlFor="obfuscatedTextOutput" className="center-label text-gray-300 font-semibold mb-2">
+            <label htmlFor="obfuscatedTextOutput" className="center-label">
               3. Texto Ofuscado:
             </label>
             <textarea
