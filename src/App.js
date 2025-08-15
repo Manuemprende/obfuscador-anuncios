@@ -17,7 +17,7 @@ function applyObfuscationToWord(word) {
   for (const char of word) {
     const obfuscatedChar = HOMOGLYPH_MAP[char] || char;
     result += obfuscatedChar;
-    result += '\u200c'; // ancho cero
+    result += '\u200c';
   }
   return result;
 }
@@ -106,6 +106,14 @@ const App = () => {
     }
   };
 
+  const clearAll = () => {
+    setInputText('');
+    setWordsToObfuscate('');
+    setObfuscatedText('');
+    setMessage('');
+    setSelectedWord('');
+  };
+
   return (
     <div className="app">
       <div className="card">
@@ -172,13 +180,19 @@ const App = () => {
             />
           </div>
 
-          <div className="row mt-12">
+          <div className="row mt-12" style={{ gap: '10px' }}>
             <button
               onClick={copyToClipboard}
               disabled={!obfuscatedText}
               className={`btn ${obfuscatedText ? 'btn-gold' : 'btn-disabled'}`}
             >
               Copiar al portapapeles
+            </button>
+            <button
+              onClick={clearAll}
+              className="btn btn-danger"
+            >
+              Limpiar Todo
             </button>
             <span className="message">{message}</span>
           </div>
