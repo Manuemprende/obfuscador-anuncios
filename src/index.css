@@ -1,0 +1,167 @@
+/* ====== Diseño negro/azul/dorado – sin Tailwind ====== */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+:root {
+  --night: #0b0f17;
+  --ink: #0b1224;
+  --card: rgba(13, 18, 34, 0.8);
+  --border: rgba(255,255,255,0.08);
+  --text: #e6eaf2;
+  --muted: #9aa4b2;
+  --blue: #3b82f6;
+  --blue-700: #2563eb;
+  --gold: #D4AF37;
+  --gold-600: #B8902E;
+  --fuchsia: #c026d3;
+  --shadow: 0 20px 60px -20px rgba(0,0,0,.6);
+}
+
+/* Fondo y layout */
+.app {
+  min-height: 100%;
+  background: radial-gradient(1200px 600px at 90% -20%, rgba(59,130,246,.15), transparent),
+              radial-gradient(900px 500px at -10% 110%, rgba(212,175,55,.18), transparent),
+              linear-gradient(135deg, var(--night), #000, var(--ink));
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  padding: 32px 16px;
+}
+
+/* Tarjeta principal */
+.card {
+  width: 100%;
+  max-width: 880px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 32px 24px;
+}
+
+/* Tipografía */
+.title {
+  margin: 0 0 6px;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+.gold { color: var(--gold); text-shadow: 0 2px 18px rgba(212,175,55,.25); }
+.subtitle { margin: 0 0 28px; color: var(--muted); max-width: 720px; }
+.stack > * + * { margin-top: 22px; }
+
+/* Inputs */
+.field { display: block; }
+.label { display: block; margin-bottom: 8px; color: #cbd5e1; font-weight: 600; }
+
+.input, .textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--text);
+  background: rgba(0,0,0,.45);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  outline: none;
+  transition: box-shadow .2s, border-color .2s, transform .05s;
+}
+.input:focus, .textarea:focus {
+  border-color: rgba(59,130,246,.6);
+  box-shadow: 0 0 0 4px rgba(59,130,246,.15);
+}
+.textarea { resize: vertical; min-height: 160px; line-height: 1.5; }
+.textarea-readonly { background: rgba(255,255,255,.03); cursor: not-allowed; }
+
+/* Botones */
+.btn {
+  border: none; border-radius: 12px; padding: 12px 18px;
+  font-weight: 700; cursor: pointer;
+  transition: transform .05s, filter .2s, box-shadow .2s, background .2s;
+  box-shadow: 0 10px 30px -12px rgba(0,0,0,.5);
+}
+.btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+.btn-primary { background: var(--blue); color: #fff; }
+.btn-primary:hover { background: var(--blue-700); }
+.full { width: 100%; }
+
+.btn-gold { background: var(--gold); color: #111; }
+.btn-gold:hover { background: var(--gold-600); color: #111; }
+
+.btn-fuchsia { background: var(--fuchsia); color: #fff; }
+.btn-fuchsia:hover { filter: brightness(1.05); }
+
+.btn-disabled {
+  background: #334155; color: #94a3b8; cursor: not-allowed; box-shadow: none;
+}
+
+/* Utilidades */
+.row { display: flex; align-items: center; gap: 12px; justify-content: space-between; flex-wrap: wrap; }
+.center { text-align: center; }
+.mt-12 { margin-top: 12px; }
+.message { color: var(--muted); font-size: 14px; font-weight: 600; }
+
+.center-title {
+  text-align: center;
+  font-size: clamp(32px, 5vw, 50px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin-bottom: 30px;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--gold), var(--blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+/* Centrar título y subtítulo */
+.center-title {
+  text-align: center;
+  font-size: clamp(32px, 5vw, 50px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+
+.center-subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: #cbd5e1; /* gris claro */
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--gold, #facc15), var(--blue, #3b82f6));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Centrar labels */
+.center-label {
+  display: block;
+  text-align: center;
+}
+
+.center-label {
+  display: block;
+  text-align: center;
+  font-size: 1.25rem; /* Aumenta tamaño */
+  font-weight: 600;
+  color: #e2e8f0; /* gris claro */
+  margin-bottom: 12px; /* espacio debajo del label */
+}
+
+.input-spacing {
+  margin-bottom: 24px; /* espacio entre campo y el siguiente label */
+}
+
